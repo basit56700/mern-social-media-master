@@ -1,23 +1,25 @@
-# Use an official Node.js runtime as a parent image
-FROM node:20
+# Base image
+FROM node:14
 
-# Set the working directory to /app
+# Create app directory
 WORKDIR /app
 
-# Copy the package.json files for the client and server
+# Install app dependencies for client
 COPY client/package*.json ./client/
-COPY server/package*.json ./server/
-
-# Install dependencies for the client and server
 RUN cd client && npm install
-RUN cd ../server && npm install
 
-# Copy the client and server code to the container
-COPY client ./client
-COPY server ./server
+# Install app dependencies for server
+COPY server/package*.json ./server/
+RUN cd server && npm install
 
-# Expose port 3000 for the client and 5000 for the server
-EXPOSE 3000 5000
+# Bundle app source
+COPY . .
 
-# Start the client and server
-CMD cd server && npm start & cd ../client && npm start
+# Build client
+RUN cd client && npm run build
+
+# Expose port
+EXPOSE 8080
+
+# Start the server
+CMD ["npm", "start"]
