@@ -3,7 +3,7 @@ services:
   nginx:
     restart: always
     container_name: nginx
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/social-app-nginx:latest
+    image: ${{ secrets.DOCKERHUB_USERNAME }}/mern_nginx:latest
     ports:
       - '80:80'
     depends_on:
@@ -13,7 +13,7 @@ services:
       - socialapp-network
   api:
     container_name: api
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/social-app-backend:latest
+    image: ${{ secrets.DOCKERHUB_USERNAME }}/mern_backend:latest
     environment:
       - MONGODB_URL=mongo_url
       - JWT_SECRET=sample
@@ -23,7 +23,7 @@ services:
     restart: always
   client:
     container_name: client
-    image: ${{ secrets.DOCKERHUB_USERNAME }}/social-app-frontend:latest
+    image: ${{ secrets.DOCKERHUB_USERNAME }}/mern_front:latest
     networks:
       - socialapp-network
     restart: always
