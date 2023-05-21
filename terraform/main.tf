@@ -231,71 +231,6 @@ resource "aws_lb_listener" "lb_listener" {
 }
 
 
-# creating launch configuration
-resource "aws_launch_configuration" "project" {
-  image_id        = "ami-053b0d53c279acc90"
-  instance_type   = "t2.micro"
-  security_groups = ["${aws_security_group.docker_project_ec2.id}"]
-  user_data       = <<EOF
-#!/bin/bash
-export PATH=/usr/local/bin:$PATH
-
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-apt-get update
-
-# install docker community edition
-apt-cache policy docker-ce
-apt-get install -y docker-ce
-
-mkdir deployment_files
-
-cd deployment_files
-
-echo "BdulaAsitb56" | docker login --username basit56700 --password-stdin
-
-echo '
-version: "3.8"
-services:
-  nginx:
-    restart: always
-    container_name: nginx
-    image: basit56700/mern_nginx:latest
-    ports:
-      - '80:80'
-    depends_on:
-      - client
-      - api
-    networks:
-      - socialapp-network
-  api:
-    container_name: api
-    image: basit56700/mern_backend:latest
-    environment:
-      - MONGODB_URL=mongo_url
-      - JWT_SECRET=sample
-      - PORT=5000
-    networks:
-      - socialapp-network
-    restart: always
-  client:
-    container_name: client
-    image: basit56700/mern_front:latest
-    networks:
-      - socialapp-network
-    restart: always
-
-networks:
-  socialapp-network:
-' >docker-compose.yml
-
-docker compose -p " Devops-Project02" up -d
-
-EOF
-  lifecycle {
-    create_before_destroy = true
-  }
-}
 
 
 resource "aws_security_group" "docker_project_ec2" {
@@ -321,15 +256,6 @@ resource "aws_security_group" "docker_project_ec2" {
 output "url" {
   value = "http://${aws_lb.docker_project_lb.dns_name}/"
 }
- 
- 
- 
- 
- 
- 
- 
- 
- 
  
  
  
