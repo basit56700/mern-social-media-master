@@ -264,18 +264,25 @@ output "url" {
  
  
  
- 
- 
- 
- 
- 
 
- Create an ECS cluster
+ 
+ # Create an S3 bucket
+resource "aws_s3_bucket" "bucket" {
+  bucket = "my-bucket-name"
+  acl    = "private"
+
+  tags = {
+    Name        = "My Bucket"
+    Environment = "Production"
+  }
+}
+
+# Create an ECS cluster
 resource "aws_ecs_cluster" "cluster" {
   name = "my-ecs-cluster"
 }
 
-# Create a task definition for each service
+# Create a task definition for the frontend service
 resource "aws_ecs_task_definition" "frontend_task" {
   family                   = "frontend-task"
   execution_role_arn       = aws_iam_role.execution_role.arn
@@ -286,7 +293,7 @@ resource "aws_ecs_task_definition" "frontend_task" {
 [
   {
     "name": "frontend-container",
-    "image": "your-frontend-image:latest",
+    "image": "basit56700/mern_front:latest",
     "portMappings": [
       {
         "containerPort": 80,
@@ -298,6 +305,7 @@ resource "aws_ecs_task_definition" "frontend_task" {
 DEFINITION
 }
 
+# Create a task definition for the backend service
 resource "aws_ecs_task_definition" "backend_task" {
   family                   = "backend-task"
   execution_role_arn       = aws_iam_role.execution_role.arn
@@ -308,7 +316,7 @@ resource "aws_ecs_task_definition" "backend_task" {
 [
   {
     "name": "backend-container",
-    "image": "your-backend-image:latest",
+    "image": "basit56700/mern_backend:latest",
     "portMappings": [
       {
         "containerPort": 5000,
@@ -320,6 +328,7 @@ resource "aws_ecs_task_definition" "backend_task" {
 DEFINITION
 }
 
+# Create a task definition for the Nginx service
 resource "aws_ecs_task_definition" "nginx_task" {
   family                   = "nginx-task"
   execution_role_arn       = aws_iam_role.execution_role.arn
@@ -330,7 +339,7 @@ resource "aws_ecs_task_definition" "nginx_task" {
 [
   {
     "name": "nginx-container",
-    "image": "your-nginx-image:latest",
+    "image": "basit56700/mern_nginx:latest",
     "portMappings": [
       {
         "containerPort": 80,
