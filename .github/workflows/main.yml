@@ -72,7 +72,7 @@ jobs:
           
   deploy-terraform:
     name: Terraform
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latests
     needs: build-and-deploy-front
     env:
       AWS_ACCESS_KEY: ${{secrets.AWS_ACCESS_KEY}}

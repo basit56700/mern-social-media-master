@@ -56,6 +56,7 @@ const Form = () => {
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
+    console.log("Register")
     // this allows us to send form info with image
     const formData = new FormData();
     for (let value in values) {
