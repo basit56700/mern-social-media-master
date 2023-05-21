@@ -4,6 +4,10 @@ on:
   push:
    branches:
       - "master"
+  
+  pull_request:
+    branches:
+      - "master"
 
 jobs:
   build-and-deploy-nginx:
@@ -104,10 +108,4 @@ jobs:
 
       - name: Terraform apply
         run: terraform apply -auto-approve
-
-      - name: Wait for 5 minutes
-        run: sleep 700
-
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve
           
