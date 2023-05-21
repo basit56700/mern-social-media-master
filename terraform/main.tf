@@ -35,7 +35,7 @@ resource "aws_subnet" "public_a" {
   tags = {
     Name = "public_a"
   }
-}ility_zone = "us-east-1b"
+}availability_zone = "us-east-1b"
 
   tags = {
     Name = "public_b"
@@ -269,6 +269,7 @@ output "url" {
  
  
  
+
  Create an ECS cluster
 resource "aws_ecs_cluster" "cluster" {
   name = "my-ecs-cluster"
